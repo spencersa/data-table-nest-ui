@@ -1,0 +1,10 @@
+{
+  "hosted-zone:account=755070949549:domainName=datatablenest.com:privateZone=false:region=us-east-2": {
+    "Id": "/hostedzone/Z0751550IN6NW767LUSQ",
+    "Name": "datatablenest.com."
+  },
+  "hosted-zone:account=755070949549:domainName=datatablenest.com:region=us-east-2": {
+    "Id": "/hostedzone/Z0751550IN6NW767LUSQ",
+    "Name": "datatablenest.com."
+  }
+}
