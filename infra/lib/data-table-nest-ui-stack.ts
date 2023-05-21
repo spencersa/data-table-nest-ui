@@ -117,6 +117,14 @@ export class DataTableNestUiStack extends cdk.Stack {
       zone,
     });
 
+    new route53.ARecord(this, "SiteAliasRecordNoSubDomain", {
+      recordName: props.domainName,
+      target: route53.RecordTarget.fromAlias(
+        new targets.CloudFrontTarget(distribution)
+      ),
+      zone,
+    });
+
     // Deploy site contents to S3 bucket
     new s3deploy.BucketDeployment(this, "DeployWithInvalidation", {
       sources: [s3deploy.Source.asset("../code/dist/data-table-nest-ui")],
