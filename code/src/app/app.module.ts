@@ -6,9 +6,15 @@ import { AppComponent } from './app.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { AuthButtonComponent } from './components/auth/login.component';
 import { UserProfileComponent } from './components/auth/user-profile.component';
+import { CallbackComponent } from './components/auth/callback.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthButtonComponent, UserProfileComponent],
+  declarations: [
+    AppComponent,
+    AuthButtonComponent,
+    UserProfileComponent,
+    CallbackComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -21,6 +27,11 @@ import { UserProfileComponent } from './components/auth/user-profile.component';
     }),
   ],
   providers: [],
-  bootstrap: [AppComponent, AuthButtonComponent, UserProfileComponent],
+  bootstrap: [
+    AppComponent,
+    AuthButtonComponent,
+    UserProfileComponent,
+    CallbackComponent,
+  ],
 })
 export class AppModule {}

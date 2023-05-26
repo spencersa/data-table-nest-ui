@@ -13,22 +13,15 @@ import { DOCUMENT } from '@angular/common';
       <button (click)="loginWithRedirect()">Log in</button>
     </ng-template>
 
-    <div *ngIf="auth.isAuthenticated$">
-      <button (click)="getToken()">Get token</button>
-      <div>{{ token }}</div>
-    </div>
+    <app-callback *ngIf="auth.isAuthenticated$"></app-callback>
   `,
   styles: [],
 })
 export class AuthButtonComponent {
-  public token: string | undefined;
-
   constructor(
     @Inject(DOCUMENT) public document: Document,
     public auth: AuthService
-  ) {
-    this.token = 'default';
-  }
+  ) {}
 
   loginWithRedirect() {
     this.auth.loginWithRedirect();
@@ -36,15 +29,5 @@ export class AuthButtonComponent {
 
   logout() {
     this.auth.logout({ logoutParams: { returnTo: document.location.origin } });
-  }
-
-  async getToken() {
-    this.token = await this.auth
-      .getAccessTokenWithPopup({
-        authorizationParams: {
-          audience: 'https://data-table-nest-api',
-        },
-      })
-      .toPromise();
   }
 }
