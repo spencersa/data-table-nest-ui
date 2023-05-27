@@ -7,6 +7,10 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { AuthButtonComponent } from './components/auth/login.component';
 import { UserProfileComponent } from './components/auth/user-profile.component';
 import { CallbackComponent } from './components/auth/callback.component';
+import { DataTablesComponent } from './components/data-tables.component';
+import { DataTableNestApi } from 'src/services/data-table-nest-api.component';
+import { HttpClientModule } from '@angular/common/http';
+import { GlobalValues } from 'src/services/global-values.component';
 
 @NgModule({
   declarations: [
@@ -14,10 +18,12 @@ import { CallbackComponent } from './components/auth/callback.component';
     AuthButtonComponent,
     UserProfileComponent,
     CallbackComponent,
+    DataTablesComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     AuthModule.forRoot({
       domain: 'dev-77r3tluzofdan1kf.us.auth0.com',
       clientId: 'IWp1HENxpjXrZuUbaFGdmyVT6jqmt4cM',
@@ -26,12 +32,13 @@ import { CallbackComponent } from './components/auth/callback.component';
       },
     }),
   ],
-  providers: [],
+  providers: [DataTableNestApi, GlobalValues],
   bootstrap: [
     AppComponent,
     AuthButtonComponent,
     UserProfileComponent,
     CallbackComponent,
+    DataTablesComponent,
   ],
 })
 export class AppModule {}

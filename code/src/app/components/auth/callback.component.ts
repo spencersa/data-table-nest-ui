@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { lastValueFrom } from 'rxjs';
+import { GlobalValues } from 'src/services/global-values.component';
 
 @Component({
   selector: 'app-callback',
@@ -8,8 +9,7 @@ import { lastValueFrom } from 'rxjs';
 })
 export class CallbackComponent implements OnInit {
   public token: string | undefined;
-
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private globalValues: GlobalValues) {}
 
   async ngOnInit(): Promise<void> {
     await this.auth.handleRedirectCallback();
@@ -22,6 +22,7 @@ export class CallbackComponent implements OnInit {
         })
       );
       localStorage.setItem('token', this.token || '');
+      this.globalValues.hasToken = true;
     } catch (error) {
       console.log(error);
     }
@@ -36,6 +37,7 @@ export class CallbackComponent implements OnInit {
           })
         );
         localStorage.setItem('token', this.token || '');
+        this.globalValues.hasToken = true;
       } catch (error) {
         console.log(error);
       }
