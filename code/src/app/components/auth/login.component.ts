@@ -13,7 +13,7 @@ import { DOCUMENT } from '@angular/common';
       <button (click)="loginWithRedirect()">Log in</button>
     </ng-template>
 
-    <app-callback *ngIf="auth.isAuthenticated$"></app-callback>
+    <app-callback *ngIf="auth.isAuthenticated$ | async"></app-callback>
   `,
   styles: [],
 })

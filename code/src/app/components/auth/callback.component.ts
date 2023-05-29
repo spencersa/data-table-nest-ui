@@ -1,11 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { lastValueFrom } from 'rxjs';
 import { GlobalValues } from 'src/services/global-values.component';
 
 @Component({
   selector: 'app-callback',
-  template: ` <p *ngIf="!token">Loading...</p> `,
+  template: ` <p *ngIf="!token">No Token...</p> `,
 })
 export class CallbackComponent implements OnInit {
   public token: string | undefined;
@@ -25,6 +25,7 @@ export class CallbackComponent implements OnInit {
       this.globalValues.hasToken = true;
     } catch (error) {
       console.log(error);
+      throw error;
     }
 
     if (this.token === undefined) {
@@ -39,7 +40,7 @@ export class CallbackComponent implements OnInit {
         localStorage.setItem('token', this.token || '');
         this.globalValues.hasToken = true;
       } catch (error) {
-        console.log(error);
+        throw error;
       }
     }
   }
