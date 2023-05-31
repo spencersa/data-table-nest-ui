@@ -11,6 +11,8 @@ import { DataTablesComponent } from './components/data-tables.component';
 import { DataTableNestApi } from 'src/services/data-table-nest-api.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalValues } from 'src/services/global-values.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { GlobalValues } from 'src/services/global-values.component';
         redirect_uri: window.location.origin,
       },
     }),
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
   ],
   providers: [DataTableNestApi, GlobalValues],
   bootstrap: [
