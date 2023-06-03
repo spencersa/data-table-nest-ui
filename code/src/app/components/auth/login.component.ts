@@ -36,6 +36,8 @@ export class AuthButtonComponent {
   }
 
   logout() {
-    this.auth.logout({ logoutParams: { returnTo: document.location.origin } });
+    this.auth.logout({
+      logoutParams: { returnTo: document.location.origin, federated: true },
+    });
   }
 }

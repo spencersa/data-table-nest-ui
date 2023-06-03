@@ -10,6 +10,7 @@ import { DataTable } from 'src/models/data-table';
 })
 export class DataTablesComponent implements OnInit {
   public tables: DataTable[] = [];
+  public isLoadingTables: boolean = true;
 
   constructor(private dataTableNestApi: DataTableNestApi) {}
 
@@ -18,11 +19,13 @@ export class DataTablesComponent implements OnInit {
   }
 
   async getTables() {
+    this.isLoadingTables = true;
     this.tables = await lastValueFrom(this.dataTableNestApi.getTables());
+    this.isLoadingTables = false;
   }
 
   async postTable() {
-    this.tables = await lastValueFrom(this.dataTableNestApi.postTable());
-    this.tables = await lastValueFrom(this.dataTableNestApi.getTables());
+    await lastValueFrom(this.dataTableNestApi.postTable());
+    await this.getTables();
   }
 }

@@ -1,4 +1,6 @@
-<div>
+<mat-spinner *ngIf="isLoadingTables"></mat-spinner>
+
+<div *ngIf="!isLoadingTables">
   {{ tables | json }}
 </div>
 

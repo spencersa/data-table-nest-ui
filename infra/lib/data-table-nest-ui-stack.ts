@@ -23,7 +23,7 @@ export class DataTableNestUiStack extends cdk.Stack {
       domainName: props.domainName,
     });
 
-    const siteDomain = props.siteSubDomain + "." + props.domainName;
+    const siteDomain = props.domainName;
 
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(
       this,
@@ -117,8 +117,8 @@ export class DataTableNestUiStack extends cdk.Stack {
       zone,
     });
 
-    new route53.ARecord(this, "SiteAliasRecordNoSubDomain", {
-      recordName: props.domainName,
+    new route53.ARecord(this, "SiteAliasRecordSubDomain", {
+      recordName: props.siteSubDomain + "." + props.domainName,
       target: route53.RecordTarget.fromAlias(
         new targets.CloudFrontTarget(distribution)
       ),

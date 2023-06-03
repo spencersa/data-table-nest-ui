@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GlobalValues } from 'src/services/global-values.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     }),
     BrowserAnimationsModule,
     MatSlideToggleModule,
+    MatProgressSpinnerModule,
   ],
   providers: [DataTableNestApi, GlobalValues],
   bootstrap: [

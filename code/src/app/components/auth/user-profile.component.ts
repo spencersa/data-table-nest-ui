@@ -4,7 +4,7 @@ import { AuthService } from '@auth0/auth0-angular';
 @Component({
   selector: 'app-user-profile',
   template: ` <div *ngIf="auth.user$ | async as user">
-    {{ user | json }}
+    Logged in user: {{ user.email }}
   </div>`,
 })
 export class UserProfileComponent {
