@@ -7,10 +7,25 @@ import { DataTable } from 'src/models/data-table';
   selector: 'data-tables',
   templateUrl: './data-tables.component.html',
   providers: [DataTableNestApi],
+  styleUrls: ['data-tables.component.css'],
 })
 export class DataTablesComponent implements OnInit {
   public tables: DataTable[] = [];
   public isLoadingTables: boolean = true;
+
+  columns = [
+    {
+      columnDef: 'number',
+      header: 'No.',
+      cell: (value: any) => `${value}`,
+    },
+    {
+      columnDef: 'values',
+      header: 'Values',
+      cell: (value: any) => `${value.value}`,
+    },
+  ];
+  displayedColumns = this.columns.map((c) => c.columnDef);
 
   constructor(private dataTableNestApi: DataTableNestApi) {}
 
@@ -21,6 +36,7 @@ export class DataTablesComponent implements OnInit {
   async getTables() {
     this.isLoadingTables = true;
     this.tables = await lastValueFrom(this.dataTableNestApi.getTables());
+    console.log(this.tables);
     this.isLoadingTables = false;
   }
 

@@ -14,6 +14,8 @@ import { GlobalValues } from 'src/services/global-values.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { DataTableComponent } from './components/data-table.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     UserProfileComponent,
     CallbackComponent,
     DataTablesComponent,
+    DataTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +40,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     BrowserAnimationsModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatTableModule,
   ],
   providers: [DataTableNestApi, GlobalValues],
   bootstrap: [
@@ -45,6 +49,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     UserProfileComponent,
     CallbackComponent,
     DataTablesComponent,
+    DataTableComponent,
   ],
 })
 export class AppModule {}
