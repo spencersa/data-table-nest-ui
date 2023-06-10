@@ -36,12 +36,22 @@ export class DataTablesComponent implements OnInit {
   async getTables() {
     this.isLoadingTables = true;
     this.tables = await lastValueFrom(this.dataTableNestApi.getTables());
-    console.log(this.tables);
     this.isLoadingTables = false;
   }
 
   async postTable() {
     await lastValueFrom(this.dataTableNestApi.postTable());
     await this.getTables();
+  }
+
+  async updateTable($event: any) {
+    let table = this.tables.filter((table) => table.id === $event.id)[0];
+    if ($event.partentTableIndex) {
+      table.values[$event.partentTableIndex].values[$event.index].value =
+        $event.value;
+    } else {
+      table.values[$event.index].value = $event.value;
+    }
+    await lastValueFrom(this.dataTableNestApi.putTable(table));
   }
 }

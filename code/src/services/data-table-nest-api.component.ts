@@ -23,7 +23,6 @@ export class DataTableNestApi {
   }
 
   postTable(): Observable<Array<DataTable>> {
-    console.log(localStorage.getItem('token') || '');
     return this.http.post<any[]>(
       `${this.apiUrl}/tables`,
       {},
@@ -34,5 +33,14 @@ export class DataTableNestApi {
         responseType: 'json',
       }
     );
+  }
+
+  putTable(table: DataTable): Observable<any> {
+    return this.http.put<any[]>(`${this.apiUrl}/tables`, table, {
+      headers: new HttpHeaders({
+        authorization: localStorage.getItem('token') || '',
+      }),
+      responseType: 'json',
+    });
   }
 }

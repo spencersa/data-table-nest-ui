@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DataTable } from 'src/models/data-table';
 
 @Component({
@@ -7,7 +7,9 @@ import { DataTable } from 'src/models/data-table';
   styleUrls: ['data-table.component.css'],
 })
 export class DataTableComponent implements OnInit {
-  @Input() values: DataTable[] = [];
+  @Input() dataTable!: DataTable;
+  @Input() partentTableIndex?: number = undefined;
+  @Output() valuesOutput: EventEmitter<any> = new EventEmitter();
 
   columns = [
     {
@@ -32,12 +34,24 @@ export class DataTableComponent implements OnInit {
   }
 
   getIndex(element: any, index: number) {
-    let previousValue = this.values[index - 1];
+    let previousValue = this.dataTable.values[index - 1];
     if (previousValue && previousValue.values) {
       element.displayIndex = index;
     } else {
       element.displayIndex = index + 1;
     }
     return element.displayIndex;
+  }
+
+  updateTable($event: any) {
+    $event.id = this.dataTable.id;
+    $event.userid = this.dataTable.userid;
+    $event.title = this.dataTable.title;
+
+    if (this.partentTableIndex) {
+      $event.partentTableIndex = this.partentTableIndex;
+    }
+
+    this.valuesOutput.emit($event);
   }
 }

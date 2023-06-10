@@ -24,7 +24,6 @@ export class CallbackComponent implements OnInit {
       localStorage.setItem('token', this.token || '');
       this.globalValues.hasToken = true;
     } catch (error) {
-      console.log(error);
       throw error;
     }
 

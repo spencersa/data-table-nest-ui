@@ -2,7 +2,10 @@
 
 <div *ngIf="!isLoadingTables" class="row">
   <div class="data-table col-md-4 col-sm-6 col-12" *ngFor="let table of tables">
-    <data-table [values]="table.values"></data-table>
+    <data-table
+      [dataTable]="table"
+      (valuesOutput)="updateTable($event)"
+    ></data-table>
   </div>
 </div>
 
