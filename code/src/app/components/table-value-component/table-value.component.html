@@ -1,15 +1,29 @@
 <div class="cointainer">
   <div class="row">
-    <div *ngIf="!isEditing" class="col col-sm-12" (click)="startEdit()">
-      {{ value }}
-    </div>
-    <mat-form-field *ngIf="isEditing" class="col col-sm-12">
-      <input matInput [(ngModel)]="value" (blur)="submitEdit()" autofocus />
+    <mat-form-field *ngIf="!isEditing" class="col-sm-12" (click)="startEdit()">
+      <input matInput [(ngModel)]="value" />
       <button
         mat-icon-button
         matSuffix
         [attr.aria-label]="'Save changes'"
-        (click)="cancelEdit()"
+        (click)="removeItem($event)"
+      >
+        <mat-icon
+          class="col-sm-1"
+          aria-hidden="false"
+          *ngIf="!isEditing"
+          aria-label="Delete value"
+          fontIcon="delete"
+        ></mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field *ngIf="isEditing" class="col-sm-12">
+      <input matInput [(ngModel)]="value" (blur)="submitEdit()" />
+      <button
+        mat-icon-button
+        matSuffix
+        [attr.aria-label]="'Save changes'"
+        (mousedown)="cancelEdit($event)"
       >
         <mat-icon
           aria-hidden="false"

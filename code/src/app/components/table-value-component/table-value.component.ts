@@ -23,7 +23,7 @@ export class TableValueComponent {
     this.previousValue = this.value;
   }
 
-  cancelEdit() {
+  cancelEdit(event: any) {
     this.isEditing = false;
     this.value = this.previousValue;
     this.previousValue = '';
@@ -34,5 +34,12 @@ export class TableValueComponent {
     this.valueOutput.emit({ index: this.index, value: this.value });
   }
 
-  removeItem() {}
+  removeItem(event: any) {
+    event.stopPropagation();
+    this.valueOutput.emit({
+      index: this.index,
+      value: this.value,
+      delete: true,
+    });
+  }
 }
