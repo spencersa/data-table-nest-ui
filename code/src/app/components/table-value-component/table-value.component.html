@@ -4,18 +4,54 @@
       <input matInput [(ngModel)]="value" />
       <button
         mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
         matSuffix
-        [attr.aria-label]="'Save changes'"
-        (click)="removeItem($event)"
+        (click)="$event.stopPropagation()"
       >
-        <mat-icon
-          class="col-sm-1"
-          aria-hidden="false"
-          *ngIf="!isEditing"
-          aria-label="Delete value"
-          fontIcon="delete"
-        ></mat-icon>
+        <mat-icon>more_vert</mat-icon>
       </button>
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          [attr.aria-label]="'Make sub value'"
+          (click)="removeItem($event)"
+        >
+          <mat-icon
+            class="col-sm-1"
+            aria-hidden="false"
+            aria-label="Make sub value"
+            fontIcon="subdirectory_arrow_right"
+          ></mat-icon>
+          <span>Make sub value</span>
+        </button>
+        <button
+          mat-menu-item
+          [attr.aria-label]="'Make primary value'"
+          (click)="removeItem($event)"
+        >
+          <mat-icon
+            class="col-sm-1"
+            aria-hidden="false"
+            aria-label="Make primary value"
+            fontIcon="subdirectory_arrow_left"
+          ></mat-icon>
+          <span>Make primary value</span>
+        </button>
+        <button
+          mat-menu-item
+          [attr.aria-label]="'Delete item'"
+          (click)="removeItem($event)"
+        >
+          <mat-icon
+            class="col-sm-1"
+            aria-hidden="false"
+            aria-label="Delete value"
+            fontIcon="delete"
+          ></mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
     </mat-form-field>
     <mat-form-field *ngIf="isEditing" class="col-sm-12">
       <input matInput [(ngModel)]="value" (blur)="submitEdit()" />

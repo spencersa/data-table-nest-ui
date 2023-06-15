@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DataTable } from 'src/models/data-table';
 import { AddDialogComponent } from '../add-dialog/add-dialog.component';
+import { DataTableNestApi } from 'src/services/data-table-nest-api.component';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'data-table',
@@ -10,10 +12,10 @@ import { AddDialogComponent } from '../add-dialog/add-dialog.component';
 })
 export class DataTableComponent implements OnInit {
   @Input() dataTable!: DataTable;
-  @Input() partentTableIndex?: number = undefined;
+  @Input() parentTable: DataTable | undefined;
+  @Input() parentTableIndex?: number = undefined;
   @Input() isLoadingTable: boolean = false;
-  @Output() valuesOutput: EventEmitter<any> = new EventEmitter();
-
+  @Input() isSubTable?: boolean = false;
   columns = [
     {
       columnDef: 'number',
@@ -28,7 +30,10 @@ export class DataTableComponent implements OnInit {
   ];
   displayedColumns = this.columns.map((c) => c.columnDef);
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    private dataTableNestApi: DataTableNestApi,
+    public dialog: MatDialog
+  ) {}
   ngOnInit(): void {}
 
   setIndex(element: any, index: number) {
@@ -46,26 +51,30 @@ export class DataTableComponent implements OnInit {
     return element.displayIndex;
   }
 
-  updateTable($event: any) {
-    $event.id = this.dataTable.id;
-    $event.userid = this.dataTable.userid;
-    $event.title = this.dataTable.title;
-
-    if (this.partentTableIndex) {
-      $event.partentTableIndex = this.partentTableIndex;
+  async updateTable($event: any) {
+    if ($event.delete) {
+      this.removeValue($event);
+    } else if ($event.add) {
+      this.dataTable.values.push({ value: $event.value });
+    } else {
+      this.updateValue($event);
     }
 
-    this.valuesOutput.emit($event);
+    this.isLoadingTable = true;
+    if (this.parentTable) {
+      await lastValueFrom(this.dataTableNestApi.putTable(this.parentTable));
+    } else {
+      await lastValueFrom(this.dataTableNestApi.putTable(this.dataTable));
+    }
+    this.isLoadingTable = false;
   }
 
   addValue(value: string) {
+    debugger;
     let event = {} as any;
-    event.id = this.dataTable.id;
-    event.userid = this.dataTable.userid;
-    event.title = this.dataTable.title;
     event.add = true;
     event.value = value;
-    event.value = this.valuesOutput.emit(event);
+    this.updateTable(event);
   }
 
   openDialog(): void {
@@ -78,5 +87,29 @@ export class DataTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.addValue(result.value);
     });
+  }
+
+  updateValue($event: any) {
+    if (this.parentTableIndex && this.parentTable) {
+      this.parentTable.values[this.parentTableIndex].values[
+        $event.index
+      ].value = $event.value;
+    } else {
+      this.dataTable.values[$event.index].value = $event.value;
+    }
+  }
+
+  removeValue($event: any) {
+    if (this.parentTableIndex) {
+      this.dataTable.values[this.parentTableIndex].values.splice(
+        $event.index,
+        1
+      );
+      if (this.dataTable.values[this.parentTableIndex].values.length === 0) {
+        this.dataTable.values.splice(this.parentTableIndex, 1);
+      }
+    } else {
+      this.dataTable.values.splice($event.index, 1);
+    }
   }
 }

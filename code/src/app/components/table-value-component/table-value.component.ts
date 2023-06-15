@@ -1,6 +1,5 @@
 import { EventEmitter, Input, Output } from '@angular/core';
 import { Component } from '@angular/core';
-import { DataTable } from 'src/models/data-table';
 
 @Component({
   selector: 'table-value',

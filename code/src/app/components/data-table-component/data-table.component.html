@@ -1,35 +1,48 @@
 <mat-spinner *ngIf="isLoadingTable"></mat-spinner>
-<table
-  *ngIf="!isLoadingTable"
-  mat-table
-  [dataSource]="dataTable.values"
-  class="mat-elevation-z8"
->
-  <ng-container matColumnDef="number">
-    <td mat-cell *matCellDef="let element; let i = index">
-      <div *ngIf="!element.values">
-        {{ getIndex(element, i) }}
-      </div>
-    </td>
-  </ng-container>
+<mat-card *ngIf="!isLoadingTable">
+  <mat-card-header>
+    <mat-card-title>{{ dataTable.title }}</mat-card-title>
+  </mat-card-header>
+  <table
+    *ngIf="!isLoadingTable"
+    mat-table
+    [dataSource]="dataTable.values"
+    class="mat-elevation-z8"
+  >
+    <ng-container matColumnDef="number">
+      <td mat-cell *matCellDef="let element; let i = index">
+        <div *ngIf="!element.values">
+          {{ getIndex(element, i) }}
+        </div>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="values">
-    <td mat-cell *matCellDef="let element; let i = index">
-      <div *ngIf="element.values">
-        <data-table
-          [dataTable]="element"
-          [partentTableIndex]="i"
-          (valuesOutput)="updateTable($event)"
-        ></data-table>
-      </div>
-      <table-value
-        [value]="element.value"
-        [index]="i"
-        (valueOutput)="updateTable($event)"
-      ></table-value>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="values">
+      <td mat-cell *matCellDef="let element; let i = index">
+        <div *ngIf="element.values">
+          <data-table
+            [dataTable]="element"
+            [parentTable]="dataTable"
+            [parentTableIndex]="i"
+            (valuesOutput)="updateTable($event)"
+          ></data-table>
+        </div>
+        <table-value
+          [value]="element.value"
+          [index]="i"
+          (valueOutput)="updateTable($event)"
+        ></table-value>
+      </td>
+    </ng-container>
 
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
-<button mat-raised-button color="primary" (click)="openDialog()">Add</button>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <button
+    *ngIf="parentTableIndex === undefined"
+    mat-raised-button
+    color="primary"
+    (click)="openDialog()"
+  >
+    Add
+  </button>
+</mat-card>
