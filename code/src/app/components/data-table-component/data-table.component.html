@@ -28,6 +28,7 @@
           ></data-table>
         </div>
         <table-value
+          *ngIf="!element.values"
           [value]="element.value"
           [index]="i"
           (valueOutput)="updateTable($event)"
