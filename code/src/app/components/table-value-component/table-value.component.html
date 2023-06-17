@@ -13,9 +13,10 @@
       </button>
       <mat-menu #menu="matMenu">
         <button
+          *ngIf="!parentTableIndex && index !== 0"
           mat-menu-item
           [attr.aria-label]="'Make sub value'"
-          (click)="removeItem($event)"
+          (click)="makeSubValue($event)"
         >
           <mat-icon
             class="col-sm-1"
@@ -26,9 +27,10 @@
           <span>Make sub value</span>
         </button>
         <button
+          *ngIf="parentTableIndex && index === 0"
           mat-menu-item
           [attr.aria-label]="'Make primary value'"
-          (click)="removeItem($event)"
+          (click)="makePrimaryValue($event)"
         >
           <mat-icon
             class="col-sm-1"
@@ -59,7 +61,7 @@
         mat-icon-button
         matSuffix
         [attr.aria-label]="'Save changes'"
-        (mousedown)="cancelEdit($event)"
+        (mousedown)="cancelEdit()"
       >
         <mat-icon
           aria-hidden="false"

@@ -16,6 +16,8 @@ export class DataTableComponent implements OnInit {
   @Input() parentTableIndex?: number = undefined;
   @Input() isLoadingTable: boolean = false;
   @Input() isSubTable?: boolean = false;
+  @Output() reloadOutput: EventEmitter<any> = new EventEmitter();
+
   columns = [
     {
       columnDef: 'number',
@@ -56,6 +58,10 @@ export class DataTableComponent implements OnInit {
       this.removeValue($event);
     } else if ($event.add) {
       this.dataTable.values.push({ value: $event.value });
+    } else if ($event.makeSubValue) {
+      this.makeSubValue($event);
+    } else if ($event.makePrimaryValue) {
+      this.makePrimaryValue($event);
     } else {
       this.updateValue($event);
     }
@@ -63,14 +69,19 @@ export class DataTableComponent implements OnInit {
     this.isLoadingTable = true;
     if (this.parentTable) {
       await lastValueFrom(this.dataTableNestApi.putTable(this.parentTable));
+      this.parentTable;
     } else {
       await lastValueFrom(this.dataTableNestApi.putTable(this.dataTable));
     }
     this.isLoadingTable = false;
+
+    if (this.parentTable) {
+      this.parentTable.values = [...this.parentTable.values];
+    }
+    this.dataTable.values = [...this.dataTable.values];
   }
 
   addValue(value: string) {
-    debugger;
     let event = {} as any;
     event.add = true;
     event.value = value;
@@ -110,6 +121,33 @@ export class DataTableComponent implements OnInit {
       }
     } else {
       this.dataTable.values.splice($event.index, 1);
+    }
+  }
+
+  makeSubValue($event: any) {
+    if (this.dataTable.values[$event.index - 1].values) {
+      this.dataTable.values[$event.index - 1].values.push({
+        value: this.dataTable.values[$event.index].value,
+      });
+      this.dataTable.values.splice($event.index, 1);
+    } else {
+      this.dataTable.values[$event.index].values = [
+        {
+          value: this.dataTable.values[$event.index].value,
+        },
+      ];
+      delete this.dataTable.values[$event.index].value;
+    }
+  }
+
+  makePrimaryValue($event: any) {
+    this.parentTable!.values.splice(this.parentTableIndex!, 0, {
+      value: this.dataTable.values[$event.index].value,
+    });
+    this.dataTable.values.splice($event.index, 1);
+
+    if (this.dataTable.values.length === 0) {
+      this.parentTable!.values.splice(this.parentTableIndex! + 1, 1);
     }
   }
 }

@@ -19,7 +19,7 @@
 
     <ng-container matColumnDef="values">
       <td mat-cell *matCellDef="let element; let i = index">
-        <div *ngIf="element.values">
+        <div *ngIf="element.values && element.values.length !== 0">
           <data-table
             [dataTable]="element"
             [parentTable]="dataTable"
@@ -31,6 +31,7 @@
           *ngIf="!element.values"
           [value]="element.value"
           [index]="i"
+          [parentTableIndex]="parentTableIndex"
           (valueOutput)="updateTable($event)"
         ></table-value>
       </td>
